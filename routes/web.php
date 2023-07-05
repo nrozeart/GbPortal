@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\WelcomePageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +16,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', [WelcomePageController::class, 'index'])
+    ->name('news.welcome');
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 //Route::get('/hello/{name}', static function (string $name) {
 //    return "Hello, $name";
