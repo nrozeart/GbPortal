@@ -33,7 +33,7 @@ class Controller extends BaseController
                 'image' => fake()->imageUrl(200,150),
                 'status' => 'ACTIVE',
                 'description' => fake()->text(100),
-                'created_at' => now()->format('d-m-Y H:i'),
+                'created_at' => now()->format('d-m-Y H:i')
             ];
         }
         return $news;
