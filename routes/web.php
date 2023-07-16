@@ -31,7 +31,7 @@ Route::get('/', [WelcomePageController::class, 'index'])
 
 //admin
 Route::group(['prefix'=>'admin', 'as'=>'admin'], static function () {
-    Route::get('/',AdminController::class)->name('index');
+    Route::get('/',AdminController::class);
     Route::resource('/categories', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
 });

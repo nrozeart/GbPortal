@@ -6,6 +6,8 @@
 
         </div>
     </div>
+    @include('inc.message')
+
     <x-alert :type="request()->get('type', 'light')" message="Это просто уведомление"></x-alert>
     <x-alert type="danger" message="Это просто уведомление"></x-alert>
     <x-alert type="warning" message="Это просто уведомление"></x-alert>
