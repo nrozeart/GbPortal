@@ -31,7 +31,11 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+        ]);
+
+        return response()->json($request->all());
     }
 
     /**
@@ -39,7 +43,7 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json($this->getNews(), 200);
     }
 
     /**
