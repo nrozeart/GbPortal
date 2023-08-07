@@ -40,3 +40,7 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
 Route::get('/test', function() {
     return response()->download('robots.txt');
 });
+
+Route::get('/collection', function() {
+    return response()->download('robots.txt');
+});
