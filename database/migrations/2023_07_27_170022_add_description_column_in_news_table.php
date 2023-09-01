@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,14 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::table('news', function (Blueprint $table) {
+            $table->text('description')->after('status')->nullable();
         });
     }
 
@@ -28,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::table('news', function (Blueprint $table) {
+            $table->dropColumn('description');
+        });
     }
 };
