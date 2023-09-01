@@ -12,6 +12,7 @@ use App\Models\News;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NewsController extends Controller
 {
@@ -50,7 +51,7 @@ class NewsController extends Controller
             return redirect()->route('admin.news.index')->with('success', __('News was saved successfully'));
         }
 
-        return back()->with('error', __('We can not save item, pleas try again'));
+        return back()->with('error', __('We can not save item, please try again'));
     }
 
     /**
@@ -84,7 +85,7 @@ class NewsController extends Controller
             return redirect()->route('admin.news.index')->with('success', __('News was saved successfully'));
         }
 
-        return back()->with('error', __('We can not save item, pleas try again'));
+        return back()->with('error', __('We can not save item, please try again'));
     }
 
     /**
@@ -98,7 +99,7 @@ class NewsController extends Controller
             return response()->json('ok');
 
         } catch (\Exception $e) {
-            \Log::error($e->getMessage(), $e->getTrace());
+            Log::error($e->getMessage(), $e->getTrace());
             return response()->json('error', 400);
         }
     }

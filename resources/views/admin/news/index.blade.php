@@ -12,7 +12,7 @@
 
     <div class="table-responsive">
         @include('inc.message')
-        <select id="filter">
+        <select  id="filter">
             <option>selected</option>
             <option>{{ \App\Enums\News\Status::DRAFT->value }}</option>
             <option>{{ \App\Enums\News\Status::ACTIVE->value }}</option>
@@ -39,7 +39,7 @@
                     <td>{{ $news->author }}</td>
                     <td>{{ $news->status }}</td>
                     <td>{{ $news->created_at }}</td>
-                    <td><a href="{{ route('admin.news.edit', ['news' => $news]) }}">Edit</a> &nbsp; <a href="javascript:;" class="delete" rel="{{ $news->id }}">Delete</a></td>
+                    <td><a href="{{ route('admin.news.edit', ['news' => $news]) }}">Edit</a> &nbsp <a href="javascript:;" class="delete" rel="{{ $news->id }}">Delete</a></td>
                 </tr>
             @empty
                 <tr>
