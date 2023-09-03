@@ -46,3 +46,18 @@ Route::get('/collection', function () {
         return $item;
     })->toArray());
 });
+
+Route::get('/session', function () {
+    $key = 'test';
+
+    if (session()->has($key)) {
+        // session()->forget($key);
+        dd(session()->all(), session()->get($key));
+    }
+
+    session()->put($key, 'Some value');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
