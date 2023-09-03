@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -21,11 +22,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function () {
-    Route::get('/', AdminController::class)->name('index');
-    Route::resource('/categories', AdminCategoryController::class);
-    Route::resource('/news', AdminNewsController::class);
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/account', AccountController::class)->name('account');
+    //Admin
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is.admin'], static function () {
+        //Route::get('/parser', ParserController::class)->name('parser');
+        Route::get('/', AdminController::class)->name('index');
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+    });
 });
 
 //News
