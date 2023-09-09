@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Account\IndexController as AccountController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SocialProvidersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +24,58 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{name}', static function (string $name) {
-    return "Hello, $name";
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/account', AccountController::class)->name('account');
+    //Admin
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is.admin'], static function () {
+        Route::get('/parser', ParserController::class)->name('parser');
+        Route::get('/', AdminController::class)->name('index');
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+    });
 });
 
-Route::get('/AboutProject/', function () {
-    return "Information about project";
+//News
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news.index');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
+
+// Guests routes
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/{driver}/redirect', [SocialProvidersController::class, 'redirect'])
+        ->where('driver', '\w+')
+        ->name('social-providers.redirect');
+
+    Route::get('/{driver}/callback', [SocialProvidersController::class, 'callback'])
+        ->where('driver', '\w+')
+        ->name('social-providers.callback');
 });
-Route::get('/news/{id}', static function (int $id) {
-    return "News $id";
+
+Route::get('/test', function() {
+    return response()->download('robots.txt');
 });
+
+Route::get('/collection', function () {
+    $array = [1,4,6,79,07,786,890,7788];
+    $collect = collect($array);
+    dd($collect->map(fn ($item) => $item * 2)->chunk(3)->sortBy(function ($item) {
+        return $item;
+    })->toArray());
+});
+
+Route::get('/session', function () {
+    $key = 'test';
+
+    if (session()->has($key)) {
+        // session()->forget($key);
+        dd(session()->all(), session()->get($key));
+    }
+
+    session()->put($key, 'Some value');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
