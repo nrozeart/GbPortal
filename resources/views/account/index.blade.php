@@ -1,5 +1,5 @@
 <br>
-<h2>Добро пожаловать, милая {{ Auth::user()->name }}</h2>
+<h2>Добро пожаловать, {{ Auth::user()->name }}</h2>
 <br>
 
 @if(Auth::user()->is_admin === true)
