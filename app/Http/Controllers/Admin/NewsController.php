@@ -9,10 +9,12 @@ use App\Http\Requests\Admin\News\Create;
 use App\Http\Requests\Admin\News\Edit;
 use App\Models\Category;
 use App\Models\News;
+use App\Services\Contracts\Upload;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use PHPUnit\Framework\Exception;
 
 class NewsController extends Controller
 {
@@ -51,7 +53,7 @@ class NewsController extends Controller
             return redirect()->route('admin.news.index')->with('success', __('News was saved successfully'));
         }
 
-        return back()->with('error', __('We can not save item, please try again'));
+        return back()->with('error', __('We can not save item, pleas try again'));
     }
 
     /**
@@ -77,15 +79,20 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Edit $request, News $news)
+    public function update(Edit $request, News $news, Upload $upload)
     {
-        $news = $news->fill($request->validated());
+        $validated = $request->validated();
+        if ($request->hasFile('image')) {
+            $validated['image'] = $upload->create($request->file('image'));
+        }
+
+        $news = $news->fill($validated);
 
         if ($news->save()) {
             return redirect()->route('admin.news.index')->with('success', __('News was saved successfully'));
         }
 
-        return back()->with('error', __('We can not save item, please try again'));
+        return back()->with('error', __('We can not save item, pleas try again'));
     }
 
     /**
@@ -98,7 +105,7 @@ class NewsController extends Controller
 
             return response()->json('ok');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage(), $e->getTrace());
             return response()->json('error', 400);
         }
